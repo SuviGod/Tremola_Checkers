@@ -703,7 +703,7 @@ function b2f_initialize(id) {
     load_contact_list()
 
     closeOverlay();
-    setScenario('chats');
+    setScenario('game');
 }
 
 // --- eof

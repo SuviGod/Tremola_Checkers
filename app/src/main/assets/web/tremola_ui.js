@@ -8,7 +8,7 @@ let display_or_not = [
     'div:qr', 'div:back',
     'core', 'lst:chats', 'lst:posts', 'lst:contacts', 'lst:members', 'the:connex',
     'div:footer', 'div:textarea', 'div:confirm-members', 'plus',
-    'div:settings'
+    'div:settings', 'game:ui'
 ];
 
 let prev_scenario = 'chats';
@@ -17,7 +17,7 @@ let curr_scenario = 'chats';
 // Array of the scenarios that have a button in the footer
 const main_scenarios = ['chats', 'contacts', 'connex'];
 
-const buttonList = ['btn:chats', 'btn:posts', 'btn:contacts', 'btn:connex'];
+const buttonList = ['btn:chats', 'btn:game', 'btn:posts', 'btn:contacts', 'btn:connex'];
 
 /**
  * The elements contained by each scenario.
@@ -30,13 +30,16 @@ let scenarioDisplay = {
     'posts': ['div:back', 'core', 'lst:posts', 'div:textarea'],
     'connex': ['div:qr', 'core', 'the:connex', 'div:footer', 'plus'],
     'members': ['div:back', 'core', 'lst:members', 'div:confirm-members'],
-    'settings': ['div:back', 'div:settings']
+    'settings': ['div:back', 'div:settings'],
+    'game': ['div:back', 'game:ui']
+//    'game': ['div:qr', 'core', 'lst:chats', 'div:footer', 'plus']
 }
 
 let scenarioMenu = {
     'chats': [['New conversation', 'menu_new_conversation'],
         ['Settings', 'menu_settings'],
-        ['About', 'menu_about']],
+        ['About', 'menu_about'],
+        ['Launch game', ['play_game']]],
     'contacts': [['New contact', 'menu_new_contact'],
         ['Settings', 'menu_settings'],
         ['About', 'menu_about']],
@@ -317,6 +320,16 @@ function look_up(shortname) {
     } else {
         launch_snackbar(`"${shortname}" is not a valid Shortname`)
     }
+}
+
+function play_game(){
+    setScenario('game')
+}
+
+function increment(){
+    const counterElement = document.getElementById("game:counter");
+    let currentValue = parseInt(counterElement.innerText);
+    counterElement.innerText = currentValue + 1;
 }
 
 // ---
