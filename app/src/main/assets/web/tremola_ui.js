@@ -324,12 +324,16 @@ function look_up(shortname) {
 
 function play_game(){
     setScenario('game')
+    startCheckersGame();
+//    init_game();
 }
 
-function increment(){
-    const counterElement = document.getElementById("game:counter");
-    let currentValue = parseInt(counterElement.innerText);
-    counterElement.innerText = currentValue + 1;
-}
+//function increment(){
+//    const counterElement = document.getElementById("game:counter");
+//    let currentValue = parseInt(counterElement.innerText);
+//    counterElement.innerText = currentValue + 1;
+//}
+
+
 
 // ---

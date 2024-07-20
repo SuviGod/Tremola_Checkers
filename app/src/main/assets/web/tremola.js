@@ -706,4 +706,14 @@ function b2f_initialize(id) {
     setScenario('game');
 }
 
+function game(){
+//    launch_snackbar("bbbbbbbbbbbbbbbbbbbbbb");
+    setScenario('game');
+    increment();
+//    init_game();
+//    launch_snackbar("aaaaaaaaaaaaaaaaaaaaaa");
+}
+
+
+/*---------------------------------*/
 // --- eof
