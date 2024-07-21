@@ -17,7 +17,7 @@ let curr_scenario = 'chats';
 // Array of the scenarios that have a button in the footer
 const main_scenarios = ['chats', 'contacts', 'connex'];
 
-const buttonList = ['btn:chats', 'btn:game', 'btn:posts', 'btn:contacts', 'btn:connex'];
+const buttonList = ['btn:chats', 'btn:posts', 'btn:contacts', 'btn:connex'];
 
 /**
  * The elements contained by each scenario.
@@ -327,24 +327,13 @@ function look_up(shortname) {
 }
 
 function play_game(){
-    // closeOverlay()
-
-    // setInterval(game, 2000);
     game();
-        // game();
-
-//    init_game();
 }
 
 
 function res(){
-    remove_gamestate('checkers')
+    remove_gamestate('checkers');
 }
-//function increment(){
-//    const counterElement = document.getElementById("game:counter");
-//    let currentValue = parseInt(counterElement.innerText);
-//    counterElement.innerText = currentValue + 1;
-//}
 
 
 

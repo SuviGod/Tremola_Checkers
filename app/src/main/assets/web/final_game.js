@@ -16,7 +16,7 @@ const PASS_COUNTER = 67;
 
 function startCheckersGame(gamest) {
 let i;
-	launch_snackbar("In the game");
+	// launch_snackbar("In the game");
 gamestate = gamest;
 /*=========variabile globale=========================*/
 
@@ -124,18 +124,18 @@ checker.prototype.checkIfKing = function () {
 }
 
 /*===============Initializarea campurilor de joc =================================*/
-launch_snackbar("2222222222222222")
+// launch_snackbar("2222222222222222")
 let white_counter = 0;
 let black_counter = 0;
 for (i = 1; i <=64; i++){
-    launch_snackbar("i = " + i);
+    // launch_snackbar("i = " + i);
 	block[i] =new square_p(square_class[i],i);
-	launch_snackbar("square " + i + " created");
+	// launch_snackbar("square " + i + " created");
 	if (gamest[i-1] != 0 ){
 
         if(gamest[i - 1] == -1){
             block[i].ocupied = true;
-            launch_snackbar("in black if " + i);
+            // launch_snackbar("in black if " + i);
             black_counter = black_counter + 1;
 
             b_checker[black_counter] = new checker(black_checker_class[black_counter], "black", i );
@@ -144,13 +144,13 @@ for (i = 1; i <=64; i++){
 
         } else if(gamest[i - 1] == 1){
             block[i].ocupied = true;
-            launch_snackbar("in white if " + i);
+            // launch_snackbar("in white if " + i);
             white_counter = white_counter + 1;
-            launch_snackbar("111");
+            // launch_snackbar("111");
 
-            launch_snackbar("222");
+            // launch_snackbar("222");
             w_checker[white_counter] = new checker(white_checker_class[white_counter], "white", i );
-            launch_snackbar("333");
+            // launch_snackbar("333");
             w_checker[white_counter].setCoord(0,0);
             block[i].pieceId =w_checker[white_counter];
 
@@ -164,7 +164,7 @@ alive_black = black_counter;
 // launch_snackbar("white counter " + white_counter + " black counter " + black_counter);
 launch_snackbar("You are " + playerColor + ", turn " + gamestate[TURN_COUNTER]);
 for(i = white_counter + 1; i <= 12; i++){
-    launch_snackbar("in white");
+    // launch_snackbar("in white");
     w_checker[white_counter] = new checker(white_checker_class[white_counter], "white", i );
     w_checker[white_counter].setCoord(0,0);
     w_checker[white_counter].alive = false;
@@ -172,13 +172,13 @@ for(i = white_counter + 1; i <= 12; i++){
 }
 
 for(i = black_counter + 1; i <= 12; i++){
-    launch_snackbar("in black");
+    // launch_snackbar("in black");
     b_checker[black_counter] = new checker(black_checker_class[black_counter], "black", i );
     b_checker[black_counter].setCoord(0,0);
     b_checker[black_counter].alive = false;
     b_checker[black_counter].id.style.display  = "none";
 }
-launch_snackbar("gooood")
+// launch_snackbar("gooood")
 /*========================================================*/
 
 
@@ -196,15 +196,15 @@ function showMoves (piece) {
         launch_snackbar("Now is not your turn.");
         return false;
     }
-	launch_snackbar("white " + is_player_white(myId));
-	launch_snackbar("turn " + gamestate[TURN_COUNTER]);
+	// launch_snackbar("white " + is_player_white(myId));
+	// launch_snackbar("turn " + gamestate[TURN_COUNTER]);
 	let match = false;
 	mustAttack = false;
-	launch_snackbar("222222");
+	// launch_snackbar("222222");
 	if(selectedPiece){
 		erase_roads(selectedPiece);
 	}
-	launch_snackbar("3333333");
+	// launch_snackbar("3333333");
 	selectedPiece = piece;
 	let al;
 	if(playerColor == "white"){
@@ -214,14 +214,14 @@ function showMoves (piece) {
 	}
 	let i, j; // retine indicele damei
 	for ( j = 1; j <= al; j++){
-		launch_snackbar("index " + j);
+		// launch_snackbar("index " + j);
 		if(the_checker[j].id === piece){
 			i = j;
 			selectedPieceindex = j;
 			match = true;
 		}
 	}
-	launch_snackbar("1111111111111");
+	// launch_snackbar("1111111111111");
 	if(oneMove && !attackMoves(oneMove)){
 //		changeTurns(oneMove);
 		oneMove = undefined;
@@ -234,7 +234,7 @@ function showMoves (piece) {
 	if(!match) {
 	 return 0 ; // daca nu a fost gasit nicio potrivire ; se intampla cand de exemplu rosu muta iar tu apasi pe negru
 	}
-	launch_snackbar("555555555");
+	// launch_snackbar("555555555");
 	/*===acum in functie de culoarea lor setez marginile si miscarile damei===*/
 	if(the_checker[i].color =="white"){
 		tableLimit = 8;
@@ -435,6 +435,7 @@ function update_gamestate(){
 		}
 	}
 	gamestate[TURN_COUNTER]++;
+	game_over(gamestate);
 	sendGameState();
 }
 
@@ -626,7 +627,7 @@ if(windowWidth > 650){
 
 }
 function init_gamestate(playerId, opponentId){
-   launch_snackbar("11111");
+   // launch_snackbar("11111");
    const board = [
        [1, 0, 1, 0, 1, 0, 1, 0],     // row 0 (white checkers)
        [0, 1, 0, 1, 0, 1, 0, 1],     // row 1 (white checkers)
@@ -637,24 +638,24 @@ function init_gamestate(playerId, opponentId){
        [-1, 0, -1, 0, -1, 0, -1, 0], // row 6 (black checkers)
        [0, -1, 0, -1, 0, -1, 0, -1]  // row 7 (black checkers)
    ];
-   launch_snackbar("222222");
+   // launch_snackbar("222222");
    // Flatten the board array into a single-dimensional array
    let flatBoard = board.flat();
-   launch_snackbar("333333333");
+   // launch_snackbar("333333333");
    // Create the final array with size 70
    let gamestate = new Array(68).fill(0);
-   launch_snackbar("88888888888888");
+   // launch_snackbar("88888888888888");
    // Copy the flat board into the first 64 elements
    for (let i = 0; i < 64; i++) {
        gamestate[i] = flatBoard[i];
    }
-   launch_snackbar("44444444");
+   // launch_snackbar("44444444");
    gamestate[WHITE_ID] = playerId;
    gamestate[BLACK_ID] = opponentId;
    gamestate[TURN_COUNTER] = 0;      //turn counter
    gamestate[PASS_COUNTER] = 0;      //pass counter
 
-   launch_snackbar("Game was created " + gamestate);
+   // launch_snackbar("Game was created " + gamestate);
    return gamestate;
 }
 
@@ -664,4 +665,26 @@ function info(){
 
 function sendGameState() {
 	post_new_gamestate("checkers", gamestate);
+}
+
+function game_over(gamestate){
+	let white = 0;
+	let black = 0;
+	for (let i = 0; i < 64; i++){
+		if(gamestate[i] == 1){
+			white++;
+		} else if(gamestate[i] == -1){
+			black++;
+		}
+	}
+	if(white == 0){
+		launch_snackbar("Black wins");
+		remove_gamestate('checkers');
+		setScenario('chat')
+	} else if(black == 0){
+		launch_snackbar("White wins");
+		remove_gamestate('checkers');
+		setScenario('chat')
+	}
+
 }
