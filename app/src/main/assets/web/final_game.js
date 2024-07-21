@@ -153,7 +153,8 @@ for (var i = 1; i <=64; i++){
         }
 	}
 }
-launch_snackbar("white counter " + white_counter + " black counter " + black_counter);
+// launch_snackbar("white counter " + white_counter + " black counter " + black_counter);
+launch_snackbar("You are " + playerColor + ", turn " + gamestate[TURN_COUNTER]);
 for(var i = white_counter + 1; i <= 12; i++){
     launch_snackbar("in white");
     w_checker[white_counter] = new checker(white_checker_class[white_counter], "white", i );
@@ -169,14 +170,16 @@ for(var i = black_counter + 1; i <= 12; i++){
     b_checker[black_counter].alive = false;
     b_checker[black_counter].id.style.display  = "none";
 }
-
+launch_snackbar("gooood")
 /*========================================================*/
 
 
 if(is_player_white(myId)){
     the_checker = w_checker;
+	playerColor = "white";
 }else{
     the_checker = b_checker;
+	playerColor = "black";
 }
 
 function showMoves (piece) {
@@ -185,6 +188,8 @@ function showMoves (piece) {
         launch_snackbar("Now is not your turn.");
         return false;
     }
+	launch_snackbar("white " + is_player_white(myId));
+	launch_snackbar("turn " + gamestate[TURN_COUNTER]);
 	var match = false;
 	mustAttack = false;
 	if(selectedPiece){
@@ -314,64 +319,68 @@ function makeMove (index) {
 		multiplier = 1;
 
 
-		if(index == cpy_upRight){
+	if(index == cpy_upRight){
+		isMove = true;
+		if(the_checker[1].color=="white"){
+			// muta piesa
+			executeMove( multiplier * 1, multiplier * 1, multiplier * 9 );
+			//elimina piesa daca a fost executata o saritura
+			if(mustAttack) eliminateCheck(index - 9);
+		}
+		else{
+			executeMove( multiplier * 1, multiplier * -1, multiplier * -7);
+			if(mustAttack) eliminateCheck( index + 7 );
+		}
+		update_gamestate();
+	}
+
+	if(index == cpy_upLeft){
+
+		isMove = true;
+		if(the_checker[1].color=="white"){
+			executeMove( multiplier * -1, multiplier * 1, multiplier * 7);
+			if(mustAttack)	eliminateCheck(index - 7 );
+		}
+		else{
+			executeMove( multiplier * -1, multiplier * -1, multiplier * -9);
+			if (mustAttack) eliminateCheck( index + 9 );
+		}
+		update_gamestate();
+	}
+
+	if(the_checker[selectedPieceindex].king){
+
+		if(index == cpy_downRight){
 			isMove = true;
 			if(the_checker[1].color=="white"){
-				// muta piesa
-				executeMove( multiplier * 1, multiplier * 1, multiplier * 9 );
-				//elimina piesa daca a fost executata o saritura
-				if(mustAttack) eliminateCheck(index - 9);
-			}
-			else{
 				executeMove( multiplier * 1, multiplier * -1, multiplier * -7);
-				if(mustAttack) eliminateCheck( index + 7 );
-			}
-		}
-
-		if(index == cpy_upLeft){
-
-			isMove = true;
-			if(the_checker[1].color=="white"){
-				executeMove( multiplier * -1, multiplier * 1, multiplier * 7);
-			 	if(mustAttack)	eliminateCheck(index - 7 );
+				if(mustAttack) eliminateCheck ( index  + 7) ;
 			}
 			else{
-				executeMove( multiplier * -1, multiplier * -1, multiplier * -9);
-				if (mustAttack) eliminateCheck( index + 9 );
+				executeMove( multiplier * 1, multiplier * 1, multiplier * 9);
+				if(mustAttack) eliminateCheck ( index  - 9) ;
 			}
+			update_gamestate();
 		}
-
-		if(the_checker[selectedPieceindex].king){
-
-			if(index == cpy_downRight){
-				isMove = true;
-				if(the_checker[1].color=="white"){
-					executeMove( multiplier * 1, multiplier * -1, multiplier * -7);
-					if(mustAttack) eliminateCheck ( index  + 7) ;
-				}
-				else{
-					executeMove( multiplier * 1, multiplier * 1, multiplier * 9);
-					if(mustAttack) eliminateCheck ( index  - 9) ;
-				}
-			}
 
 		if(index == cpy_downLeft){
 			isMove = true;
-				if(the_checker[1].color=="white"){
-					executeMove( multiplier * -1, multiplier * -1, multiplier * -9);
-					if(mustAttack) eliminateCheck ( index  + 9) ;
-				}
-				else{
-					executeMove( multiplier * -1, multiplier * 1, multiplier * 7);
-					if(mustAttack) eliminateCheck ( index  - 7) ;
-				}
+			if(the_checker[1].color=="white"){
+				executeMove( multiplier * -1, multiplier * -1, multiplier * -9);
+				if(mustAttack) eliminateCheck ( index  + 9) ;
+
 			}
+			else{
+				executeMove( multiplier * -1, multiplier * 1, multiplier * 7);
+				if(mustAttack) eliminateCheck ( index  - 7) ;
+			}
+			update_gamestate();
 		}
+	}
 
 	erase_roads(0);
 	the_checker[selectedPieceindex].checkIfKing();
 
-	// schimb randul
 	if (isMove) {
 
 			anotherMove = undefined;
@@ -392,8 +401,7 @@ function makeMove (index) {
 		}
 	}
 
-    update_gamestate();
-    sendGameState();
+
 }
 
 function update_gamestate(){
@@ -409,7 +417,8 @@ function update_gamestate(){
 			gamestate[i-1] = 0;
 		}
 	}
-	gamestate[TURN_COUNTER] = gamestate[TURN_COUNTER] + 1;
+	gamestate[TURN_COUNTER]++;
+	sendGameState();
 }
 
 	function sendGameState() {
@@ -632,4 +641,8 @@ function init_gamestate(playerId, opponentId){
 
    launch_snackbar("Game was created " + gamestate);
    return gamestate;
+}
+
+function info(){
+	launch_snackbar("You are " + playerColor + ", turn " + gamestate[TURN_COUNTER]);
 }

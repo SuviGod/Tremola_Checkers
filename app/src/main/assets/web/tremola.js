@@ -748,7 +748,8 @@ function game() {
         launch_snackbar("You are able to play checkers only with 2 players");
         return;
     }
-
+    setScenario('game');
+    closeOverlay();
     //start game or load existing gamestate
     const opponent_id = get_opponent_id();
     launch_snackbar("opponent id: " + opponent_id);

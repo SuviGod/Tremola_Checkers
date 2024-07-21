@@ -50,10 +50,13 @@ let scenarioMenu = {
         ['(un)Forget', 'menu_forget_conv'],
         ['Settings', 'menu_settings'],
         ['About', 'menu_about'],
+        ['Reset game', 'res'],
         ['Launch game', 'play_game']],
     'members': [['Settings', 'menu_settings'],
         ['About', 'menu_about']],
-
+    'game': [['Reset game', 'res'],
+        ['Update game', "play_game"],
+        ['Info', 'info']],
     'settings': []
 }
 
@@ -323,11 +326,15 @@ function look_up(shortname) {
 }
 
 function play_game(){
-    setScenario('game');
+    // closeOverlay()
     game();
 //    init_game();
 }
 
+
+function res(){
+    remove_gamestate('checkers')
+}
 //function increment(){
 //    const counterElement = document.getElementById("game:counter");
 //    let currentValue = parseInt(counterElement.innerText);
