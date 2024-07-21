@@ -56,7 +56,8 @@ let scenarioMenu = {
         ['About', 'menu_about']],
     'game': [['Reset game', 'res'],
         ['Update game', "play_game"],
-        ['Info', 'info']],
+        ['Info', 'info'],
+        ['Close', 'closeOverlay']],
     'settings': []
 }
 
@@ -327,7 +328,11 @@ function look_up(shortname) {
 
 function play_game(){
     // closeOverlay()
+
+    // setInterval(game, 2000);
     game();
+        // game();
+
 //    init_game();
 }
 

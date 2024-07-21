@@ -681,6 +681,7 @@ function b2f_new_event(e) { // incoming SSB log event: we get map with three ent
             tremola.games[gameName] = {};
         }
 
+
         var gameState = e.confid.gameState.split(',');
         for(let i = 0; i < 87; i++) {       //cast strings to ints
             var n = parseInt(gameState[i]);
@@ -689,6 +690,9 @@ function b2f_new_event(e) { // incoming SSB log event: we get map with three ent
             }
         }
         tremola.games[gameName][e.header.fid] = gameState;
+        if(curr_scenario == 'game'){
+            startCheckersGame(gameState);
+        }
     }
     persist();
     must_redraw = true;
@@ -766,7 +770,7 @@ function game() {
     launch_snackbar("opponent id: " + opponent_id);
     if (!(opponent_id in tremola.games['checkers'])) {
         tremola.games['checkers'][opponent_id] = init_gamestate(myId, opponent_id);
-
+        post_new_gamestate("checkers", tremola.games['checkers'][opponent_id]);
     }
     // tremola.games['checkers'][opponent_id] = init_gamestate(myId, opponent_id);
     launch_snackbar("qqqqqqqqqqqq");

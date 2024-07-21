@@ -15,7 +15,8 @@ const PASS_COUNTER = 67;
 
 
 function startCheckersGame(gamest) {
-launch_snackbar("In the game");
+let i;
+	launch_snackbar("In the game");
 gamestate = gamest;
 /*=========variabile globale=========================*/
 
@@ -27,23 +28,28 @@ var table = document.getElementById("table1");
 var score = document.getElementById("score");
 var black_background = document.getElementById("black_background");
 
-var windowHeight = window.innerHeight
-|| document.documentElement.clientHeight
-|| document.body.clientHeight;  ;
-var windowWidth =  window.innerWidth
-|| document.documentElement.clientWidth
-|| document.body.clientWidth;
-var moveLength = 60 ;
-var moveDeviation = 10;
-var Dimension = 1;
-var selectedPiece,selectedPieceindex;
-var upRight,upLeft,downLeft,downRight;  // toate variantele posibile de mers pt o  dama
-var contor = 0 , gameOver = 0;
-var bigScreen = 1;
+let windowHeight = window.innerHeight
+	|| document.documentElement.clientHeight
+	|| document.body.clientHeight;
 
-var block = [];
+let windowWidth = window.innerWidth
+	|| document.documentElement.clientWidth
+	|| document.body.clientWidth;
+let moveLength = 60;
+let moveDeviation = 10;
+var Dimension = 1;
+let selectedPiece, selectedPieceindex;
+let upRight, upLeft, downLeft, downRight;  // toate variantele posibile de mers pt o  dama
+let contor = 0, gameOver = 0;
+let bigScreen = 1;
+
+	var block = [];
 var w_checker = [];
 var b_checker = [];
+
+let alive_white = 12;
+let alive_black = 12;
+
 var the_checker ;
 var oneMove;
 var anotherMove;
@@ -95,8 +101,8 @@ var checker = function(piece,color,square) {
 }
 
 checker.prototype.setCoord = function(X,Y){
-	var x = (this.coordX - 1  ) * moveLength + moveDeviation;
-	var y = (this.coordY - 1 ) * moveLength  + moveDeviation;
+	const x = (this.coordX - 1) * moveLength + moveDeviation;
+	const y = (this.coordY - 1) * moveLength + moveDeviation;
 	this.id.style.top = y + 'px';
 	this.id.style.left = x + 'px';
 }
@@ -119,9 +125,9 @@ checker.prototype.checkIfKing = function () {
 
 /*===============Initializarea campurilor de joc =================================*/
 launch_snackbar("2222222222222222")
-var white_counter = 0;
-var black_counter = 0;
-for (var i = 1; i <=64; i++){
+let white_counter = 0;
+let black_counter = 0;
+for (i = 1; i <=64; i++){
     launch_snackbar("i = " + i);
 	block[i] =new square_p(square_class[i],i);
 	launch_snackbar("square " + i + " created");
@@ -155,7 +161,7 @@ for (var i = 1; i <=64; i++){
 }
 // launch_snackbar("white counter " + white_counter + " black counter " + black_counter);
 launch_snackbar("You are " + playerColor + ", turn " + gamestate[TURN_COUNTER]);
-for(var i = white_counter + 1; i <= 12; i++){
+for(i = white_counter + 1; i <= 12; i++){
     launch_snackbar("in white");
     w_checker[white_counter] = new checker(white_checker_class[white_counter], "white", i );
     w_checker[white_counter].setCoord(0,0);
@@ -163,7 +169,7 @@ for(var i = white_counter + 1; i <= 12; i++){
     w_checker[white_counter].id.style.display  = "none";
 }
 
-for(var i = black_counter + 1; i <= 12; i++){
+for(i = black_counter + 1; i <= 12; i++){
     launch_snackbar("in black");
     b_checker[black_counter] = new checker(black_checker_class[black_counter], "black", i );
     b_checker[black_counter].setCoord(0,0);
@@ -190,21 +196,24 @@ function showMoves (piece) {
     }
 	launch_snackbar("white " + is_player_white(myId));
 	launch_snackbar("turn " + gamestate[TURN_COUNTER]);
-	var match = false;
+	let match = false;
 	mustAttack = false;
+	launch_snackbar("222222");
 	if(selectedPiece){
-			erase_roads(selectedPiece);
+		erase_roads(selectedPiece);
 	}
+	launch_snackbar("3333333");
 	selectedPiece = piece;
-	var i,j; // retine indicele damei
+	let i, j; // retine indicele damei
 	for ( j = 1; j <= 12; j++){
-		if(the_checker[j].id == piece){
+		launch_snackbar("index " + j);
+		if(the_checker[j].id === piece){
 			i = j;
 			selectedPieceindex = j;
 			match = true;
 		}
 	}
-
+	launch_snackbar("1111111111111");
 	if(oneMove && !attackMoves(oneMove)){
 //		changeTurns(oneMove);
 		oneMove = undefined;
@@ -217,7 +226,7 @@ function showMoves (piece) {
 	if(!match) {
 	 return 0 ; // daca nu a fost gasit nicio potrivire ; se intampla cand de exemplu rosu muta iar tu apasi pe negru
 	}
-
+	launch_snackbar("555555555");
 	/*===acum in functie de culoarea lor setez marginile si miscarile damei===*/
 	if(the_checker[i].color =="white"){
 		tableLimit = 8;
@@ -240,7 +249,7 @@ function showMoves (piece) {
  	/*===========VERIFIC DACA POT ATACA====*/
 
 
-		attackMoves(the_checker[i]); // verifica daca am vreo miscare de atac
+	attackMoves(the_checker[i]); // verifica daca am vreo miscare de atac
 
 
 	/*========DACA NU POT ATACA VERIFIC DACA POT MERGE======*/
@@ -406,7 +415,7 @@ function makeMove (index) {
 
 function update_gamestate(){
 
-	for (var i = 1; i <= 64; i++){
+	for (let i = 1; i <= 64; i++){
 		if (block[i].ocupied){
 			if(block[i].pieceId.color == "black"){
 				gamestate[i-1] = -1;
@@ -421,9 +430,7 @@ function update_gamestate(){
 	sendGameState();
 }
 
-	function sendGameState() {
-		post_new_gamestate("checkers", gamestate);
-	}
+
 
 function executeMove (X,Y,nSquare){
 	// schimb coordonate piesei mutate
@@ -645,4 +652,8 @@ function init_gamestate(playerId, opponentId){
 
 function info(){
 	launch_snackbar("You are " + playerColor + ", turn " + gamestate[TURN_COUNTER]);
+}
+
+function sendGameState() {
+	post_new_gamestate("checkers", gamestate);
 }
