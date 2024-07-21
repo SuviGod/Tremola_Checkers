@@ -410,8 +410,8 @@ input:checked + .slider:before {
 }
 
 .checker{
-	top:0px;
-	left:0px;
+	top:8px;
+	left:8px;
 	width: 42px;
 	height: 42px;
 	border-radius: 50%;

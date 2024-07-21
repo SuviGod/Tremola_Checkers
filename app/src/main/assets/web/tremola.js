@@ -558,7 +558,21 @@ function backend(cmdStr) { // send this to Kotlin (or simulate in case of browse
         }
         // console.log('e=', JSON.stringify(e))
         b2f_new_event(e)
-    } else {
+    } else if (cmdStr[0] === 'priv:gamePost') {
+        const gameName = cmdStr[1];
+        const gameState = cmdStr[2];
+        const recp = cmdStr[3];
+        var e = {
+          'header': {
+              'tst': Date.now(),
+              'ref': Math.floor(1000000 * Math.random()),
+              'fid': myId
+          },
+          'confid': {'type': 'gamePost', 'gameName': gameName, 'gameState': gameState, 'recp': recp},
+          'public': {}
+        }
+        b2f_new_event(e)
+        }else {
         // console.log('backend', JSON.stringify(cmdStr))
     }
 }
@@ -703,7 +717,7 @@ function b2f_initialize(id) {
     load_contact_list()
 
     closeOverlay();
-    setScenario('game');
+    setScenario('chats');
 }
 
 function game(){
