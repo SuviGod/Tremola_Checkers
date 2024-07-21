@@ -159,6 +159,8 @@ for (i = 1; i <=64; i++){
         }
 	}
 }
+alive_white = white_counter;
+alive_black = black_counter;
 // launch_snackbar("white counter " + white_counter + " black counter " + black_counter);
 launch_snackbar("You are " + playerColor + ", turn " + gamestate[TURN_COUNTER]);
 for(i = white_counter + 1; i <= 12; i++){
@@ -204,8 +206,14 @@ function showMoves (piece) {
 	}
 	launch_snackbar("3333333");
 	selectedPiece = piece;
+	let al;
+	if(playerColor == "white"){
+		al = alive_white;
+	}else{
+		al = alive_black;
+	}
 	let i, j; // retine indicele damei
-	for ( j = 1; j <= 12; j++){
+	for ( j = 1; j <= al; j++){
 		launch_snackbar("index " + j);
 		if(the_checker[j].id === piece){
 			i = j;
