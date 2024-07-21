@@ -18,7 +18,7 @@ var windowHeight = window.innerHeight
 var windowWidth =  window.innerWidth
 || document.documentElement.clientWidth
 || document.body.clientWidth;
-var moveLength = 80 ;
+var moveLength = 60 ;
 var moveDeviation = 10;
 var Dimension = 1;
 var selectedPiece,selectedPieceindex;
@@ -39,12 +39,12 @@ var tableLimit,reverse_tableLimit ,  moveUpLeft,moveUpRight, moveDownLeft,moveDo
 
 /*================================*/
 	getDimension();
-	if(windowWidth > 640){
-		moveLength = 80;
+	if(windowWidth > 480){
+		moveLength = 60;
 		moveDeviation = 10;
 	}
 	else{
-		moveLength = 50;
+		moveLength = 40;
 		moveDeviation = 6;
 	}
 
