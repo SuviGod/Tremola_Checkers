@@ -690,6 +690,7 @@ function b2f_new_event(e) { // incoming SSB log event: we get map with three ent
             }
         }
         tremola.games[gameName][e.header.fid] = gameState;
+        game_over(gamestate);
         if(curr_scenario == 'game'){
             startCheckersGame(gameState);
         }
@@ -741,12 +742,6 @@ function b2f_initialize(id) {
     setScenario('chats');
 }
 
-// function game(){
-// //    launch_snackbar("bbbbbbbbbbbbbbbbbbbbbb");
-//     setScenario('game');
-//     increment();
-// //    init_game();
-// //    launch_snackbar("aaaaaaaaaaaaaaaaaaaaaa");
 function game() {
     if (tremola.chats[curr_chat].members.length != 2) {
         launch_snackbar("You are able to play checkers only with 2 players");
@@ -756,7 +751,7 @@ function game() {
     closeOverlay();
     //start game or load existing gamestate
     const opponent_id = get_opponent_id();
-    launch_snackbar("opponent id: " + opponent_id);
+    // launch_snackbar("opponent id: " + opponent_id);
     if (!('games' in tremola)) {
         tremola.games = {};
     }
@@ -764,20 +759,20 @@ function game() {
     if (!("checkers" in tremola.games)) {
         tremola.games['checkers'] = {};
     }
-    launch_snackbar("gggggggggggg");
+    // launch_snackbar("gggggggggggg");
 //    tremola.games['checkers'] = {};
-    launch_snackbar("ppppppp");
-    launch_snackbar("opponent id: " + opponent_id);
+//     launch_snackbar("ppppppp");
+//     launch_snackbar("opponent id: " + opponent_id);
     if (!(opponent_id in tremola.games['checkers'])) {
         tremola.games['checkers'][opponent_id] = init_gamestate(myId, opponent_id);
         post_new_gamestate("checkers", tremola.games['checkers'][opponent_id]);
     }
     // tremola.games['checkers'][opponent_id] = init_gamestate(myId, opponent_id);
-    launch_snackbar("qqqqqqqqqqqq");
+    // launch_snackbar("qqqqqqqqqqqq");
 //    tremola.games['checkers'][opponent_id] = init_gamestate(myId, opponent_id);
-    launch_snackbar("123456");
+//     launch_snackbar("123456");
     const open_games = tremola.games['checkers'];
-    launch_snackbar("Starting the game " + open_games[opponent_id]);
+    // launch_snackbar("Starting the game " + open_games[opponent_id]);
     startCheckersGame(open_games[opponent_id]);
 }
 
