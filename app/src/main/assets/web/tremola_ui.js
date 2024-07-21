@@ -323,7 +323,7 @@ function look_up(shortname) {
 }
 
 function play_game(){
-    setScenario('game')
+    setScenario('game');
     game();
 //    init_game();
 }

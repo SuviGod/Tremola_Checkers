@@ -672,6 +672,23 @@ function b2f_new_event(e) { // incoming SSB log event: we get map with three ent
         // if (curr_scenario == "chats") // the updated conversation could bubble up
         load_chat_list();
         // console.log(JSON.stringify(tremola))
+    } else if (e.confid && e.confid.type === 'gamePost') {
+        const gameName = e.confid.gameName;
+        if(!('games' in tremola)) {
+            tremola.games = {};
+        }
+        if(!(gameName in tremola.games)) {
+            tremola.games[gameName] = {};
+        }
+
+        var gameState = e.confid.gameState.split(',');
+        for(let i = 0; i < 87; i++) {       //cast strings to ints
+            var n = parseInt(gameState[i]);
+            if(!Number.isNaN(n)) {
+                gamestate[i] = n;
+            }
+        }
+        tremola.games[gameName][e.header.fid] = gameState;
     }
     persist();
     must_redraw = true;
@@ -720,42 +737,45 @@ function b2f_initialize(id) {
     setScenario('chats');
 }
 
-function game(){
-//    launch_snackbar("bbbbbbbbbbbbbbbbbbbbbb");
-    setScenario('game');
-    increment();
-//    init_game();
-//    launch_snackbar("aaaaaaaaaaaaaaaaaaaaaa");
+// function game(){
+// //    launch_snackbar("bbbbbbbbbbbbbbbbbbbbbb");
+//     setScenario('game');
+//     increment();
+// //    init_game();
+// //    launch_snackbar("aaaaaaaaaaaaaaaaaaaaaa");
 function game() {
     if (tremola.chats[curr_chat].members.length != 2) {
         launch_snackbar("You are able to play checkers only with 2 players");
         return;
     }
-//    setScenario('game');
 
     //start game or load existing gamestate
     const opponent_id = get_opponent_id();
     launch_snackbar("opponent id: " + opponent_id);
-    if(!('games' in tremola)) {
+    if (!('games' in tremola)) {
         tremola.games = {};
     }
 //    tremola.games = {};
-    if(!("checkers" in tremola.games)) {
+    if (!("checkers" in tremola.games)) {
         tremola.games['checkers'] = {};
     }
     launch_snackbar("gggggggggggg");
 //    tremola.games['checkers'] = {};
     launch_snackbar("ppppppp");
     launch_snackbar("opponent id: " + opponent_id);
-    if(!(opponent_id in tremola.games['checkers'])) {
+    if (!(opponent_id in tremola.games['checkers'])) {
         tremola.games['checkers'][opponent_id] = init_gamestate(myId, opponent_id);
+
     }
+    // tremola.games['checkers'][opponent_id] = init_gamestate(myId, opponent_id);
     launch_snackbar("qqqqqqqqqqqq");
 //    tremola.games['checkers'][opponent_id] = init_gamestate(myId, opponent_id);
     launch_snackbar("123456");
     const open_games = tremola.games['checkers'];
     launch_snackbar("Starting the game " + open_games[opponent_id]);
     startCheckersGame(open_games[opponent_id]);
+}
+
 function get_opponent_id() {
     const id = tremola.chats[curr_chat].members[0];
     if (id !== myId) {
@@ -785,7 +805,7 @@ function remove_gamestate(gameName) {
     const opponent_id = get_opponent_id();
     delete tremola.games[gameName][opponent_id];
 }
-}
+
 
 
 /*---------------------------------*/

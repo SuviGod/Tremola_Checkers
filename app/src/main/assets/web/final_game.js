@@ -157,7 +157,7 @@ launch_snackbar("white counter " + white_counter + " black counter " + black_cou
 for(var i = white_counter + 1; i <= 12; i++){
     launch_snackbar("in white");
     w_checker[white_counter] = new checker(white_checker_class[white_counter], "white", i );
-    w_checker[i].setCoord(0,0);
+    w_checker[white_counter].setCoord(0,0);
     w_checker[white_counter].alive = false;
     w_checker[white_counter].id.style.display  = "none";
 }
@@ -165,7 +165,7 @@ for(var i = white_counter + 1; i <= 12; i++){
 for(var i = black_counter + 1; i <= 12; i++){
     launch_snackbar("in black");
     b_checker[black_counter] = new checker(black_checker_class[black_counter], "black", i );
-    b_checker[i].setCoord(0,0);
+    b_checker[black_counter].setCoord(0,0);
     b_checker[black_counter].alive = false;
     b_checker[black_counter].id.style.display  = "none";
 }
@@ -173,16 +173,18 @@ for(var i = black_counter + 1; i <= 12; i++){
 /*========================================================*/
 
 
-
-/*================SELECTIA UNEI PIESE==============*/
-the_checker = w_checker;
+if(is_player_white(myId)){
+    the_checker = w_checker;
+}else{
+    the_checker = b_checker;
+}
 
 function showMoves (piece) {
-	/* daca a fost selectat inainte o piesa stergem drumurile ei actualizand nu drumurile  Game made by Cojocaru Calin George all rights reserved piesei noi s
-	electat
 
-	*/
-
+    if(!is_my_turn(myId)){
+        launch_snackbar("Now is not your turn.");
+        return false;
+    }
 	var match = false;
 	mustAttack = false;
 	if(selectedPiece){
@@ -199,7 +201,7 @@ function showMoves (piece) {
 	}
 
 	if(oneMove && !attackMoves(oneMove)){
-		changeTurns(oneMove);
+//		changeTurns(oneMove);
 		oneMove = undefined;
 		return false;
 	}
@@ -251,6 +253,25 @@ function showMoves (piece) {
 		}
 	return false;
 
+}
+
+function is_my_turn(myId){
+
+    if(myId == gamestate[WHITE_ID] && gamestate[TURN_COUNTER] % 2 == 0){
+        return true;
+    } else if (myId == gamestate[BLACK_ID] && gamestate[TURN_COUNTER] % 2 == 1){
+        return true;
+    } else{
+        return false;
+    }
+}
+
+function is_player_white(myId){
+    if(myId == gamestate[WHITE_ID]){
+        return true;
+    } else{
+        return false;
+    }
 }
 
 
@@ -363,16 +384,37 @@ function makeMove (index) {
 		}
 		else{
 			oneMove = undefined;
-		 	changeTurns(the_checker[1]);
-		 	gameOver = checkIfLost();
-		 	if(gameOver) { setTimeout( declareWinner(),3000 ); return false};
-		 	gameOver = checkForMoves();
-		 	if(gameOver) { setTimeout( declareWinner() ,3000) ; return false};
+//		 	changeTurns(the_checker[1]);
+//		 	gameOver = checkIfLost();
+//		 	if(gameOver) { setTimeout( declareWinner(),3000 ); return false};
+//		 	gameOver = checkForMoves();
+//		 	if(gameOver) { setTimeout( declareWinner() ,3000) ; return false};
 		}
 	}
+
+    update_gamestate();
+    sendGameState();
 }
 
-/*===========MUTAREA PIESEI-SCHIMBAREA COORDONATELOR======*/
+function update_gamestate(){
+
+	for (var i = 1; i <= 64; i++){
+		if (block[i].ocupied){
+			if(block[i].pieceId.color == "black"){
+				gamestate[i-1] = -1;
+			} else if(block[i].pieceId.color == "white"){
+				gamestate[i-1] = 1;
+			}
+		}else{
+			gamestate[i-1] = 0;
+		}
+	}
+	gamestate[TURN_COUNTER] = gamestate[TURN_COUNTER] + 1;
+}
+
+	function sendGameState() {
+		post_new_gamestate("checkers", gamestate);
+	}
 
 function executeMove (X,Y,nSquare){
 	// schimb coordonate piesei mutate
@@ -559,35 +601,35 @@ if(windowWidth > 650){
 
 
 }
-//function init_gamestate(playerId, opponentId){
-//    launch_snackbar("11111");
-//    const board = [
-//        [1, 0, 1, 0, 1, 0, 1, 0],     // row 0 (white checkers)
-//        [0, 1, 0, 1, 0, 1, 0, 1],     // row 1 (white checkers)
-//        [1, 0, 1, 0, 1, 0, 1, 0],     // row 2 (white checkers)
-//        [0, 0, 0, 0, 0, 0, 0, 0],     // row 3 (empty squares)
-//        [0, 0, 0, 0, 0, 0, 0, 0],     // row 4 (empty squares)
-//        [0, -1, 0, -1, 0, -1, 0, -1], // row 5 (black checkers)
-//        [-1, 0, -1, 0, -1, 0, -1, 0], // row 6 (black checkers)
-//        [0, -1, 0, -1, 0, -1, 0, -1]  // row 7 (black checkers)
-//    ];
-//    launch_snackbar("222222");
-//    // Flatten the board array into a single-dimensional array
-//    let flatBoard = board.flat();
-//    launch_snackbar("333333333");
-//    // Create the final array with size 70
-//    let gamestate = new Array(68).fill(0);
-//    launch_snackbar("88888888888888");
-//    // Copy the flat board into the first 64 elements
-//    for (let i = 0; i < 64; i++) {
-//        gamestate[i] = flatBoard[i];
-//    }
-//    launch_snackbar("44444444");
-//    gamestate[WHITE_ID] = playerId;
-//    gamestate[BLACK_ID] = opponentId;
-//    gamestate[TURN_COUNTER] = 0;      //turn counter
-//    gamestate[PASS_COUNTER] = 0;      //pass counter
-//
-//    launch_snackbar("Game was created " + gamestate);
-//    return gamestate;
-//}
+function init_gamestate(playerId, opponentId){
+   launch_snackbar("11111");
+   const board = [
+       [1, 0, 1, 0, 1, 0, 1, 0],     // row 0 (white checkers)
+       [0, 1, 0, 1, 0, 1, 0, 1],     // row 1 (white checkers)
+       [1, 0, 1, 0, 1, 0, 1, 0],     // row 2 (white checkers)
+       [0, 0, 0, 0, 0, 0, 0, 0],     // row 3 (empty squares)
+       [0, 0, 0, 0, 0, 0, 0, 0],     // row 4 (empty squares)
+       [0, -1, 0, -1, 0, -1, 0, -1], // row 5 (black checkers)
+       [-1, 0, -1, 0, -1, 0, -1, 0], // row 6 (black checkers)
+       [0, -1, 0, -1, 0, -1, 0, -1]  // row 7 (black checkers)
+   ];
+   launch_snackbar("222222");
+   // Flatten the board array into a single-dimensional array
+   let flatBoard = board.flat();
+   launch_snackbar("333333333");
+   // Create the final array with size 70
+   let gamestate = new Array(68).fill(0);
+   launch_snackbar("88888888888888");
+   // Copy the flat board into the first 64 elements
+   for (let i = 0; i < 64; i++) {
+       gamestate[i] = flatBoard[i];
+   }
+   launch_snackbar("44444444");
+   gamestate[WHITE_ID] = playerId;
+   gamestate[BLACK_ID] = opponentId;
+   gamestate[TURN_COUNTER] = 0;      //turn counter
+   gamestate[PASS_COUNTER] = 0;      //pass counter
+
+   launch_snackbar("Game was created " + gamestate);
+   return gamestate;
+}
