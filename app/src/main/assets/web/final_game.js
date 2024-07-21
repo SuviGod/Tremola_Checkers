@@ -1,7 +1,22 @@
+const BLACK = 1;
+const WHITE = 2;
 
-function startCheckersGame() {
+let gamestate;          //0-63: field, 64: blackId, 65: whiteId, 66: turn counter, 67: pass counter
+let currentPlayer;
+let playerColor;
+let opponentColor;
 
-launch_snackbar("QR scan failed")
+const WHITE_ID = 64;
+const BLACK_ID = 65;
+
+const TURN_COUNTER = 66;
+const PASS_COUNTER = 67;
+
+
+
+function startCheckersGame(gamest) {
+launch_snackbar("In the game");
+gamestate = gamest;
 /*=========variabile globale=========================*/
 
 
@@ -103,58 +118,56 @@ checker.prototype.checkIfKing = function () {
 }
 
 /*===============Initializarea campurilor de joc =================================*/
-
-
-for (var i = 1; i <=64; i++)
+launch_snackbar("2222222222222222")
+var white_counter = 0;
+var black_counter = 0;
+for (var i = 1; i <=64; i++){
+    launch_snackbar("i = " + i);
 	block[i] =new square_p(square_class[i],i);
+	launch_snackbar("square " + i + " created");
+	if (gamest[i-1] != 0 ){
 
-/*==================================================*/
+        if(gamest[i - 1] == -1){
+            block[i].ocupied = true;
+            launch_snackbar("in black if " + i);
+            black_counter = black_counter + 1;
 
+            b_checker[black_counter] = new checker(black_checker_class[black_counter], "black", i );
+            b_checker[black_counter].setCoord(0,0);
+            block[i].pieceId =b_checker[black_counter];
 
-/*================initializarea damelor =================================*/
+        } else if(gamest[i - 1] == 1){
+            block[i].ocupied = true;
+            launch_snackbar("in white if " + i);
+            white_counter = white_counter + 1;
+            launch_snackbar("111");
 
-	// damele albe
-for (var i = 1; i <= 4; i++){
-	w_checker[i] = new checker(white_checker_class[i], "white", 2*i -1 );
-	w_checker[i].setCoord(0,0);
-	block[2*i - 1].ocupied = true;
-	block[2*i - 1].pieceId =w_checker[i];
+            launch_snackbar("222");
+            w_checker[white_counter] = new checker(white_checker_class[white_counter], "white", i );
+            launch_snackbar("333");
+            w_checker[white_counter].setCoord(0,0);
+            block[i].pieceId =w_checker[white_counter];
+
+        }else {
+            return 0;
+        }
+	}
+}
+launch_snackbar("white counter " + white_counter + " black counter " + black_counter);
+for(var i = white_counter + 1; i <= 12; i++){
+    launch_snackbar("in white");
+    w_checker[white_counter] = new checker(white_checker_class[white_counter], "white", i );
+    w_checker[i].setCoord(0,0);
+    w_checker[white_counter].alive = false;
+    w_checker[white_counter].id.style.display  = "none";
 }
 
-for (var i = 5; i <= 8; i++){
-	w_checker[i] = new checker(white_checker_class[i], "white", 2*i );
-	w_checker[i].setCoord(0,0);
-	block[2*i].ocupied = true;
-	block[2*i].pieceId = w_checker[i];
-}
-
-for (var i = 9; i <= 12; i++){
-	w_checker[i] = new checker(white_checker_class[i], "white", 2*i - 1 );
-	w_checker[i].setCoord(0,0);
-	block[2*i - 1].ocupied = true;
-	block[2*i - 1].pieceId = w_checker[i];
-}
-
-//damele negre
-for (var i = 1; i <= 4; i++){
-	b_checker[i] = new checker(black_checker_class[i], "black", 56 + 2*i  );
-	b_checker[i].setCoord(0,0);
-	block[56 +  2*i ].ocupied = true;
-	block[56+  2*i ].pieceId =b_checker[i];
-}
-
-for (var i = 5; i <= 8; i++){
-	b_checker[i] = new checker(black_checker_class[i], "black", 40 +  2*i - 1 );
-	b_checker[i].setCoord(0,0);
-	block[ 40 + 2*i - 1].ocupied = true;
-	block[ 40 + 2*i - 1].pieceId = b_checker[i];
-}
-
-for (var i = 9; i <= 12; i++){
-	b_checker[i] = new checker(black_checker_class[i], "black", 24 + 2*i  );
-	b_checker[i].setCoord(0,0);
-	block[24 + 2*i ].ocupied = true;
-	block[24 + 2*i ].pieceId = b_checker[i];
+for(var i = black_counter + 1; i <= 12; i++){
+    launch_snackbar("in black");
+    b_checker[black_counter] = new checker(black_checker_class[black_counter], "black", i );
+    b_checker[i].setCoord(0,0);
+    b_checker[black_counter].alive = false;
+    b_checker[black_counter].id.style.display  = "none";
 }
 
 /*========================================================*/
@@ -546,3 +559,35 @@ if(windowWidth > 650){
 
 
 }
+//function init_gamestate(playerId, opponentId){
+//    launch_snackbar("11111");
+//    const board = [
+//        [1, 0, 1, 0, 1, 0, 1, 0],     // row 0 (white checkers)
+//        [0, 1, 0, 1, 0, 1, 0, 1],     // row 1 (white checkers)
+//        [1, 0, 1, 0, 1, 0, 1, 0],     // row 2 (white checkers)
+//        [0, 0, 0, 0, 0, 0, 0, 0],     // row 3 (empty squares)
+//        [0, 0, 0, 0, 0, 0, 0, 0],     // row 4 (empty squares)
+//        [0, -1, 0, -1, 0, -1, 0, -1], // row 5 (black checkers)
+//        [-1, 0, -1, 0, -1, 0, -1, 0], // row 6 (black checkers)
+//        [0, -1, 0, -1, 0, -1, 0, -1]  // row 7 (black checkers)
+//    ];
+//    launch_snackbar("222222");
+//    // Flatten the board array into a single-dimensional array
+//    let flatBoard = board.flat();
+//    launch_snackbar("333333333");
+//    // Create the final array with size 70
+//    let gamestate = new Array(68).fill(0);
+//    launch_snackbar("88888888888888");
+//    // Copy the flat board into the first 64 elements
+//    for (let i = 0; i < 64; i++) {
+//        gamestate[i] = flatBoard[i];
+//    }
+//    launch_snackbar("44444444");
+//    gamestate[WHITE_ID] = playerId;
+//    gamestate[BLACK_ID] = opponentId;
+//    gamestate[TURN_COUNTER] = 0;      //turn counter
+//    gamestate[PASS_COUNTER] = 0;      //pass counter
+//
+//    launch_snackbar("Game was created " + gamestate);
+//    return gamestate;
+//}

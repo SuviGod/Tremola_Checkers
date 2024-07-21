@@ -324,7 +324,7 @@ function look_up(shortname) {
 
 function play_game(){
     setScenario('game')
-    startCheckersGame();
+    game();
 //    init_game();
 }
 

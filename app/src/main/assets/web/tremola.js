@@ -726,6 +726,65 @@ function game(){
     increment();
 //    init_game();
 //    launch_snackbar("aaaaaaaaaaaaaaaaaaaaaa");
+function game() {
+    if (tremola.chats[curr_chat].members.length != 2) {
+        launch_snackbar("You are able to play checkers only with 2 players");
+        return;
+    }
+//    setScenario('game');
+
+    //start game or load existing gamestate
+    const opponent_id = get_opponent_id();
+    launch_snackbar("opponent id: " + opponent_id);
+    if(!('games' in tremola)) {
+        tremola.games = {};
+    }
+//    tremola.games = {};
+    if(!("checkers" in tremola.games)) {
+        tremola.games['checkers'] = {};
+    }
+    launch_snackbar("gggggggggggg");
+//    tremola.games['checkers'] = {};
+    launch_snackbar("ppppppp");
+    launch_snackbar("opponent id: " + opponent_id);
+    if(!(opponent_id in tremola.games['checkers'])) {
+        tremola.games['checkers'][opponent_id] = init_gamestate(myId, opponent_id);
+    }
+    launch_snackbar("qqqqqqqqqqqq");
+//    tremola.games['checkers'][opponent_id] = init_gamestate(myId, opponent_id);
+    launch_snackbar("123456");
+    const open_games = tremola.games['checkers'];
+    launch_snackbar("Starting the game " + open_games[opponent_id]);
+    startCheckersGame(open_games[opponent_id]);
+function get_opponent_id() {
+    const id = tremola.chats[curr_chat].members[0];
+    if (id !== myId) {
+        return id;
+    }
+    return tremola.chats[curr_chat].members[1];
+}
+function is_game_running(gameName) {
+    if (!(gameName in tremola.games)) {
+        return false;
+    }
+    const opponent_id = get_opponent_id();
+    return opponent_id in tremola.games[gameName];
+}
+function post_new_gamestate(gameName, gameState) {
+    const opponent_id = get_opponent_id();
+    //update stored gamestate for sender
+    tremola.games[gameName][opponent_id] = gameState;
+    //launch_snackbar("update gamestate");
+
+    //send gamestate to opponent
+    backend("priv:gamePost " + gameName + " " + gameState + " " + opponent_id);
+    backend("priv:post " + btoa("Game Update: " + gameName) + " " + opponent_id);
+}
+
+function remove_gamestate(gameName) {
+    const opponent_id = get_opponent_id();
+    delete tremola.games[gameName][opponent_id];
+}
 }
 
 
